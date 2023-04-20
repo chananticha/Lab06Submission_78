@@ -11,6 +11,7 @@ class InputBox:
         self.text = text
         self.keep = text
         self.num = False
+        self.type = False
         self.txt_surface = FONT.render(text, True, self.color)
         self.active = False
 
@@ -33,11 +34,14 @@ class InputBox:
                 elif event.key == pg.K_BACKSPACE:
                     self.text = self.text[:-1]
                 else:
-                    
-                    self.text += event.unicode
+                    if not self.type:
+                        self.text += event.unicode
+
+                    elif self.type and event.unicode.isdigit():
+                        self.text += event.unicode
                     
                 # Re-render the text.
-                self.txt_surface = FONT.render(self.text, True, self.color)
+                    self.txt_surface = FONT.render(self.text, True, self.color)
     
     def recollect(self):
         return self.keep
@@ -68,6 +72,7 @@ FONT = pg.font.Font(None, 32)
 
 input_box1 = InputBox(150, 150, 140, 32) # สร้าง InputBox1
 input_box2 = InputBox(150, 300, 140, 32) # สร้าง InputBox2
+input_box2.type = True
 input_box3 = InputBox(450, 150, 140, 32) # สร้าง InputBox3
 input_box4 = InputBox(330, 400, 140, 32)
 input_boxes = [input_box1, input_box2, input_box3, input_box4] # เก็บ InputBox ไว้ใน list เพื่อที่จะสามารถนำไปเรียกใช้ได้ง่าย
@@ -121,10 +126,7 @@ while run:
             textt = font.render('Hello ' + input_box1.text +'  '+  input_box3.text +'  '+ 'You are  ' + input_box2.text + '  years old.', True, (0,0,0), (255,255,255))
         for box in input_boxes:
             box.handle_event(event)
-            if box.active and input_box2 == box:
-                input_box2.num = True
-            else:
-                input_box2.num = False
+        
                 
         
         if event.type == pg.QUIT:
