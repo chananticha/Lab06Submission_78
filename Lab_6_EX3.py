@@ -10,6 +10,7 @@ class InputBox:
         self.color = COLOR_INACTIVE
         self.text = text
         self.keep = text
+        self.num = False
         self.txt_surface = FONT.render(text, True, self.color)
         self.active = False
 
@@ -120,6 +121,11 @@ while run:
             textt = font.render('Hello ' + input_box1.text +'  '+  input_box3.text +'  '+ 'You are  ' + input_box2.text + '  years old.', True, (0,0,0), (255,255,255))
         for box in input_boxes:
             box.handle_event(event)
+            if box.active and input_box2 == box:
+                input_box2.num = True
+            else:
+                input_box2.num = False
+                
         
         if event.type == pg.QUIT:
             pg.quit()
